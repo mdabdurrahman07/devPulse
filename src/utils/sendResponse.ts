@@ -8,7 +8,7 @@ export function sendResponse<T, X>(
     data,
     err,
   }: { message: unknown; error?: boolean; data?: T; err?: X },
-  status = 200,
+  status = error ? 500 : 200,
 ) {
   res.status(status).json({
     success: error ? false : true,

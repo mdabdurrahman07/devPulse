@@ -10,11 +10,11 @@ const registerUser = async (req: Request, res: Response) => {
       message: "User registered successfully",
       error: false,
       data: result.rows[0],
-    });
+    },201);
   } catch (error: unknown) {
     console.log(error)
     if (error instanceof Error) {
-      sendResponse(res, { message: error.message, error: true, err: error });
+      sendResponse(res, { message: error.message, error: true, err: error }, 400);
     } else {
       sendResponse(res, {
         message: "An unexpected error occurred",
