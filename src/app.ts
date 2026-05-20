@@ -3,15 +3,19 @@ import express, {
   type Request,
   type Response,
 } from "express";
-import cors from "cors"
+import cors from "cors";
+import { authRoute } from "./modules/auth/auth.route";
+import globalErrorHandler from "./utils/globalErrorHandler";
 const app: Application = express();
 
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-    origin: "http://localhost:5000/"
-}))
+app.use(
+  cors({
+    origin: "http://localhost:5000/",
+  }),
+);
 
 // root
 
@@ -23,4 +27,8 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
+// auth route
+app.use("/api/auth", authRoute);
+
+app.use(globalErrorHandler);
 export default app;
