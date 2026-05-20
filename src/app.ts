@@ -3,14 +3,15 @@ import express, {
   type Request,
   type Response,
 } from "express";
+import cors from "cors"
 const app: Application = express();
 
 // middleware
-app.use(express.json);
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cors({
-//     origin: ""
-// }))
+app.use(cors({
+    origin: "http://localhost:5000/"
+}))
 
 // root
 
