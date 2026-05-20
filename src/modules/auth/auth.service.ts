@@ -15,7 +15,21 @@ const createUserIntoDB = async (payload: User) => {
   delete result.rows[0].password;
   return result;
 };
+const validateUser = async (email: string, password: string) => {
+  const result = await pool.query(
+    `SELECT * FROM users WHERE email=$1
+    `,
+    [email],
+  );
+  if (!result.rows.length) {
+    return null;
+  }
+  const { password: hashPassword, ...user } = result.rows[0];
+  const isValid = await bcrypt.compare(password, hashPassword);
+  return isValid ? user : null;
+};
 
 export const authServices = {
   createUserIntoDB,
+  validateUser,
 };
