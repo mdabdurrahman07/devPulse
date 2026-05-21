@@ -20,14 +20,20 @@ const createIssueIntoDB = async (payload: Issues) => {
 const getAllIssuesFromDB = async () => {
   const result = pool.query(
     `SELECT * FROM issues
-    RETURNING *
     `,
   );
   return result;
 };
 const getSingleIssuesFromDB = async () => {};
 const updateIssueFromDB = async () => {};
-const deleteIssueFromDB = async () => {};
+const deleteIssueFromDB = async (id: string) => {
+  const result = pool.query(
+    `DELETE FROM issues WHERE id=$1
+    `,[id]
+  )
+  return result
+
+};
 
 export const issuesServices = {
   createIssueIntoDB,
