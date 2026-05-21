@@ -56,13 +56,16 @@ const getAllIssues = async (req: Request, res: Response) => {
   }
 };
 const getSingleIssue = async (req: Request, res: Response) => {
-  const id = req.user?.id;
+  const {id} = req.params
   try {
     const result = await issuesServices.getSingleIssuesFromDB(id as string);
+    if(!result){
+      sendResponse(res, {message:"No Data found", error:true},404)
+    }
     sendResponse(res, {
       message: "Single Issue retrieved",
       error: false,
-      data: result.rows[0],
+      data: result,
     });
   } catch (error) {
     if (error instanceof Error) {

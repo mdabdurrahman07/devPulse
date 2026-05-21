@@ -89,14 +89,41 @@ const getAllIssuesFromDB = async (query: IssuesQuery) => {
   return result;
 };
 const getSingleIssuesFromDB = async (id: string) => {
-  const user = await authServices.getUserById(id);
-  if (!user) {
-    throw new Error("user not found");
-  }
-  const result = pool.query(
-    `SELECT
+  const issueResult = await pool.query(
+    `SELECT * FROM issues WHERE id=$1
     `,
+    [id],
   );
+  const issue = issueResult.rows[0];
+  if (!issue) {
+    return null;
+  }
+  //* extract reported_id
+  const reporterId = issue.reporter_id;
+  //* fetch reporter
+  const usersQuery = await pool.query(
+    `SELECT id, name, role FROM users WHERE id = ANY($1)`,
+    [[reporterId]],
+  );
+  const user = usersQuery.rows[0] || null;
+
+  const result = {
+    id: issue.id,
+    title: issue.title,
+    description: issue.description,
+    type: issue.type,
+    status: issue.status,
+    reporter: user
+      ? {
+          id: user.id,
+          name: user.name,
+          role: user.role,
+        }
+      : null,
+    created_at: issue.created_at,
+    updated_at: issue.updated_at,
+  };
+  return result;
 };
 const updateIssueFromDB = async () => {};
 const deleteIssueFromDB = async (id: string) => {
