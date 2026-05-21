@@ -42,21 +42,37 @@ const loginUser = async (req: Request, res: Response) => {
       401,
     );
   }
-  const { accessToken, refreshToken } = signToken(user);
-  res.cookie("refreshToken", refreshToken, {
-    secure: false,
-    httpOnly: true,
-    sameSite: "lax",
-  });
-  const result = {
-    token: accessToken,
-    user: user,
-  };
-  sendResponse(
-    res,
-    { message: "Login successful", error: false, data: result },
-    200,
-  );
+  try {
+    const { accessToken, refreshToken } = signToken(user);
+    res.cookie("refreshToken", refreshToken, {
+      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+    });
+    const result = {
+      token: accessToken,
+      user: user,
+    };
+    sendResponse(
+      res,
+      { message: "Login successful", error: false, data: result },
+      200,
+    );
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      sendResponse(
+        res,
+        { message: error.message, error: true, err: error },
+        400,
+      );
+    } else {
+      sendResponse(res, {
+        message: "An unexpected error occurred",
+        error: true,
+        err: error,
+      });
+    }
+  }
 };
 
 export const authController = {
