@@ -5,8 +5,9 @@ Internal Tech Issue & Feature Tracker
 
 A collaborative platform for software teams to report bugs, suggest features, and coordinate resolutions.
 
+## Live Link
 
-
+ - [link](devpulse-chi-lovat.vercel.app)
 
 ## Tech Stack
 
@@ -20,9 +21,46 @@ A collaborative platform for software teams to report bugs, suggest features, an
 
 **Deployment:** Vercel
 
-## Live Link
+## File Structure 
 
- - [click me](devpulse-chi-lovat.vercel.app)
+DEVPULSE/
+├── node_modules/
+└── src/
+    ├── config/
+    │   └── env.config.ts
+    ├── db/
+    │   └── dbConnection.ts
+    ├── middleware/
+    │   ├── authMiddleware.ts
+    │   └── checkRole.ts
+    ├── modules/
+    │   ├── auth/
+    │   │   ├── auth.controller.ts
+    │   │   ├── auth.interface.ts
+    │   │   ├── auth.route.ts
+    │   │   └── auth.service.ts
+    │   └── issues/
+    │       ├── issues.controller.ts
+    │       ├── issues.interface.ts
+    │       ├── issues.route.ts
+    │       └── issues.service.ts
+    ├── types/
+    │   ├── express.d.ts
+    │   └── types.ts
+    ├── utils/
+    │   ├── globalErrorHandler.ts
+    │   ├── jwt.ts
+    │   └── sendResponse.ts
+    ├── app.ts
+    └── server.ts
+├── .env
+├── .env.example.md
+├── .gitignore
+├── package-lock.json
+├── package.json
+├── README.md
+└── tsconfig.json
+
 
 ## Run this project locally
 
