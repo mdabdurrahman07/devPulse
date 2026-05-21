@@ -67,7 +67,7 @@ const getSingleIssue = async (req: Request, res: Response) => {
       error: false,
       data: result,
     });
-  } catch (error) {
+  } catch (error:unknown) {
     if (error instanceof Error) {
       sendResponse(
         res,
@@ -83,7 +83,29 @@ const getSingleIssue = async (req: Request, res: Response) => {
     }
   }
 };
-const updateIssue = async (req: Request, res: Response) => {};
+const updateIssue = async (req: Request, res: Response) => {
+  const {id}= req.params
+  const body = req.body
+  const user = req.user!
+  try {
+    const result = await issuesServices.updateIssueFromDB(id as string, body, user)
+    sendResponse(res, {message:"Issue updated successfully", error:false, data:result.rows[0]})
+  } catch (error:unknown) {
+     if (error instanceof Error) {
+      sendResponse(
+        res,
+        { message: error.message, error: true, err: error },
+        400,
+      );
+    } else {
+      sendResponse(res, {
+        message: "An unexpected error occurred",
+        error: true,
+        err: error,
+      });
+    }
+  }
+};
 const deleteIssue = async (req: Request, res: Response) => {
   const { id } = req.params;
   if (!id) {
@@ -96,9 +118,9 @@ const deleteIssue = async (req: Request, res: Response) => {
         message: "failed to delete issue",
         error: true,
         err: result,
-      });
+      },400);
     }
-    sendResponse(res, { message: "Issue deleted successfully", error: false });
+    sendResponse(res, { message: "Issue deleted successfully", error: false }, 204);
   } catch (error: unknown) {
     if (error instanceof Error) {
       sendResponse(

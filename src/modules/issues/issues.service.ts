@@ -1,5 +1,5 @@
 import { pool } from "../../db/dbConnection";
-import type { IssuesQuery } from "../../types/types";
+import type { IssuesQuery, PUser } from "../../types/types";
 import { authServices } from "../auth/auth.service";
 import type { Issues } from "./issues.interface";
 
@@ -125,7 +125,44 @@ const getSingleIssuesFromDB = async (id: string) => {
   };
   return result;
 };
-const updateIssueFromDB = async () => {};
+const updateIssueFromDB = async (id:string, payload: Partial<Issues>, user:PUser ) => {
+  const allIssues = await pool.query(
+    `SELECT * FROM issues WHERE id=$1
+    `,[id]
+  )
+
+  const issue = allIssues.rows[0]
+  if(!issue){
+    throw new Error("Issue not found")
+  }
+
+  // maintainer and contributor checks 
+  if(user.role === "contributor"){
+    // authentication check
+    if(String(issue.reporter_id) !== String(user.id)){
+      throw new Error("Forbidden: You can update your own issues")
+    }
+    if(issue.status != "open"){
+      throw new Error("Forbidden: You can Update only your issue")
+    }
+  }
+
+  const {title , description, type} = payload
+
+  const result = await pool.query(
+    `UPDATE issues
+    SET title=$1, description=$2, type=$3, updated_at=NOW()
+    WHERE id=$4
+    RETURNING *
+    `,[title ?? issue.title, 
+      description ?? issue.description,
+      type ?? issue.type,
+      id
+    ]
+  )
+  return result
+
+};
 const deleteIssueFromDB = async (id: string) => {
   const result = pool.query(
     `DELETE FROM issues WHERE id=$1
