@@ -54,7 +54,7 @@ lastly to run this project use
   npm run dev
 ```
 
-# API Documentation
+## API Documentation
 
 ## Authentication Endpoints
 | Method | Endpoint | Description |
@@ -81,3 +81,8 @@ lastly to run this project use
     *   **Maintainers** have full administrative rights to update any issue.
     *   **Contributors** can only edit their own issues if the status is currently set to `open`.
 *   **Deletion:** Restricted strictly to users with the `maintainer` role.
+
+
+## Authors
+
+- [@mdabdurrahman](https://github.com/mdabdurrahman07)
