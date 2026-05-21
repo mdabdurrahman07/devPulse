@@ -83,6 +83,6 @@ lastly to run this project use
 *   **Deletion:** Restricted strictly to users with the `maintainer` role.
 
 
-## Authors
+## Author
 
 - [@mdabdurrahman](https://github.com/mdabdurrahman07)
