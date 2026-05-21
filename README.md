@@ -23,6 +23,7 @@ A collaborative platform for software teams to report bugs, suggest features, an
 
 ## File Structure 
 
+```text
 DEVPULSE/
 ├── node_modules/
 └── src/
@@ -60,7 +61,7 @@ DEVPULSE/
 ├── package.json
 ├── README.md
 └── tsconfig.json
-
+```
 
 ## Run this project locally
 
