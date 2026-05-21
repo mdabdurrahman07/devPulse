@@ -7,7 +7,6 @@ import type { PUser } from "../types/types";
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization;
-    console.log(token)
     if (!token) {
       return sendResponse(
         res,
