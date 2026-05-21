@@ -43,8 +43,8 @@ const loginUser = async (req: Request, res: Response) => {
     );
   }
   try {
-    const { accessToken, refreshToken } = signToken(user);
-    res.cookie("refreshToken", refreshToken, {
+    const { accessToken } = signToken(user);
+    res.cookie("Authorization", accessToken, {
       secure: false,
       httpOnly: true,
       sameSite: "lax",

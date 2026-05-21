@@ -1,11 +1,12 @@
 import { Router } from "express";
+import { issuesController } from "./issues.controller";
 
 const router = Router();
 
-router.post("/");
-router.get("/");
-router.get("/:id");
-router.put("/:id");
-router.delete("/:id");
+router.post("/", issuesController.createIssue);
+router.get("/", issuesController.getAllIssue);
+router.get("/:id", issuesController.getSingleIssue);
+router.put("/:id" , issuesController.updateIssue);
+router.delete("/:id", issuesController.deleteIssue);
 
 export const issuesRoute = router;

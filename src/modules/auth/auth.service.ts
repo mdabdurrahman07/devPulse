@@ -1,4 +1,5 @@
 import { pool } from "../../db/dbConnection";
+import type { PUser } from "../../types/types";
 import type { User } from "./auth.interface";
 import bcrypt from "bcryptjs";
 
@@ -28,8 +29,18 @@ const validateUser = async (email: string, password: string) => {
   const isValid = await bcrypt.compare(password, hashPassword);
   return isValid ? user : null;
 };
+const getUserById = async (id: string) => {
+  const result = await pool.query(
+    `
+    SELECT * users WHERE id=$1
+    `,
+    [id],
+  );
+  return result.rows[0] as PUser & { id: string };
+};
 
 export const authServices = {
   createUserIntoDB,
   validateUser,
+  getUserById
 };
