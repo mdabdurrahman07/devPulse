@@ -4,7 +4,6 @@ import type { Request, Response } from "express";
 
 const createIssue = async (req: Request, res: Response) => {
   const body = req.body;
-  console.log(body);
   try {
     const result = await issuesServices.createIssueIntoDB(body);
     sendResponse(res, {

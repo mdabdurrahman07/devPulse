@@ -32,15 +32,15 @@ const validateUser = async (email: string, password: string) => {
 const getUserById = async (id: string) => {
   const result = await pool.query(
     `
-    SELECT * users WHERE id=$1
+    SELECT * FROM users WHERE id=$1
     `,
     [id],
   );
-  return result.rows[0] as PUser & { id: string };
+  return result.rows[0];
 };
 
 export const authServices = {
   createUserIntoDB,
   validateUser,
-  getUserById
+  getUserById,
 };
