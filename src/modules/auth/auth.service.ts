@@ -32,11 +32,11 @@ const validateUser = async (email: string, password: string) => {
 const getUserById = async (id: string) => {
   const result = await pool.query(
     `
-    SELECT * FROM users WHERE id=$1
+    SELECT id,name,email,role FROM users WHERE id=$1
     `,
     [id],
   );
-  return result.rows[0];
+  return result.rows[0] as PUser;
 };
 
 export const authServices = {

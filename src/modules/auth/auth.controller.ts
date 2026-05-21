@@ -44,11 +44,6 @@ const loginUser = async (req: Request, res: Response) => {
   }
   try {
     const { accessToken } = signToken(user);
-    res.cookie("Authorization", accessToken, {
-      secure: false,
-      httpOnly: true,
-      sameSite: "lax",
-    });
     const result = {
       token: accessToken,
       user: user,
