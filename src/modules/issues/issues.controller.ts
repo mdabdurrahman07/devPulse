@@ -33,11 +33,11 @@ const createIssue = async (req: Request, res: Response) => {
 };
 const getAllIssues = async (req: Request, res: Response) => {
   try {
-    const result = await issuesServices.getAllIssuesFromDB();
+    const result = await issuesServices.getAllIssuesFromDB(req.query);
     sendResponse(res, {
       message: "All issues retrieved successfully",
       error: false,
-      data: result.rows[0],
+      data: result.rows,
     });
   } catch (error: unknown) {
     if (error instanceof Error) {

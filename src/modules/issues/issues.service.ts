@@ -1,4 +1,5 @@
 import { pool } from "../../db/dbConnection";
+import type { IssuesQuery } from "../../types/types";
 import { authServices } from "../auth/auth.service";
 import type { Issues } from "./issues.interface";
 
@@ -17,11 +18,38 @@ const createIssueIntoDB = async (payload: Issues) => {
   );
   return result;
 };
-const getAllIssuesFromDB = async () => {
-  const result = pool.query(
-    `SELECT * FROM issues
-    `,
-  );
+const getAllIssuesFromDB = async (query: IssuesQuery) => {
+  const { sort = "newest", type, status } = query;
+  const conditions: string[] = [];
+  const values: string[] = [];
+  let index = 1;
+  //* filtering types
+  if (type) {
+    conditions.push(`type = $${index}`);
+    values.push(type);
+    index++;
+  }
+  //* filtering status
+  if (status) {
+    conditions.push(`type = $${index}`);
+    values.push(status);
+    index++;
+  }
+  //! normal query
+  let SQL = `SELECT * FROM issues`;
+
+  //! query
+  if (conditions.length > 0) {
+    SQL += ` WHERE ${conditions.join(" AND ")}`;
+  }
+  //! sorts
+  if (sort === "oldest") {
+    SQL += ` ORDER BY created_at ASC`;
+  } else {
+    SQL += ` ORDER BY created_at DESC`;
+  }
+
+  const result = await pool.query(SQL, values);
   return result;
 };
 const getSingleIssuesFromDB = async () => {};
@@ -29,10 +57,10 @@ const updateIssueFromDB = async () => {};
 const deleteIssueFromDB = async (id: string) => {
   const result = pool.query(
     `DELETE FROM issues WHERE id=$1
-    `,[id]
-  )
-  return result
-
+    `,
+    [id],
+  );
+  return result;
 };
 
 export const issuesServices = {
