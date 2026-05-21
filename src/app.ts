@@ -6,6 +6,7 @@ import express, {
 import cors from "cors";
 import { authRoute } from "./modules/auth/auth.route";
 import globalErrorHandler from "./utils/globalErrorHandler";
+import { issuesRoute } from "./modules/issues/issues.route";
 const app: Application = express();
 
 // middleware
@@ -29,6 +30,7 @@ app.get("/", (req: Request, res: Response) => {
 
 // auth route
 app.use("/api/auth", authRoute);
+app.use("/api/issues", issuesRoute);
 
 app.use(globalErrorHandler);
 export default app;
