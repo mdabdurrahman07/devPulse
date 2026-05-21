@@ -31,7 +31,7 @@ const getAllIssuesFromDB = async (query: IssuesQuery) => {
   }
   //* filtering status
   if (status) {
-    conditions.push(`type = $${index}`);
+    conditions.push(`status = $${index}`);
     values.push(status);
     index++;
   }
@@ -49,10 +49,55 @@ const getAllIssuesFromDB = async (query: IssuesQuery) => {
     SQL += ` ORDER BY created_at DESC`;
   }
 
-  const result = await pool.query(SQL, values);
+  const fetchedIssues = await pool.query(SQL, values);
+  const issues = fetchedIssues.rows;
+
+  //* extracting unique reporter_ids
+  const reporterIds = [...new Set(issues.map((issue) => issue.reporter_id))];
+  if (reporterIds.length === 0) {
+    return [];
+  }
+  //* fetch reporters
+  const usersQuery = await pool.query(
+    `SELECT id, name, role FROM users WHERE id= ANY($1)`,
+    [reporterIds],
+  );
+
+  const users = usersQuery.rows;
+
+  // ! user mapping
+  const userMap = users.reduce(
+    (acc, user) => {
+      acc[user.id] = user;
+      return acc;
+    },
+    {} as Record<number, any>,
+  );
+
+  const result = issues.map((issue) => ({
+    id: issue.id,
+    title: issue.title,
+    description: issue.description,
+    type: issue.type,
+    status: issue.status,
+
+    reporter: userMap[issue.reporter_id] || null,
+    created_at: issue.created_at,
+    updated_at: issue.updated_at,
+  }));
+
   return result;
 };
-const getSingleIssuesFromDB = async () => {};
+const getSingleIssuesFromDB = async (id: string) => {
+  const user = await authServices.getUserById(id);
+  if (!user) {
+    throw new Error("user not found");
+  }
+  const result = pool.query(
+    `SELECT
+    `,
+  );
+};
 const updateIssueFromDB = async () => {};
 const deleteIssueFromDB = async (id: string) => {
   const result = pool.query(

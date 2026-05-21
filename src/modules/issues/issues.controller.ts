@@ -37,7 +37,7 @@ const getAllIssues = async (req: Request, res: Response) => {
     sendResponse(res, {
       message: "All issues retrieved successfully",
       error: false,
-      data: result.rows,
+      data: result,
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -55,17 +55,45 @@ const getAllIssues = async (req: Request, res: Response) => {
     }
   }
 };
-const getSingleIssue = async (req: Request, res: Response) => {};
+const getSingleIssue = async (req: Request, res: Response) => {
+  const id = req.user?.id;
+  try {
+    const result = await issuesServices.getSingleIssuesFromDB(id as string);
+    sendResponse(res, {
+      message: "Single Issue retrieved",
+      error: false,
+      data: result.rows[0],
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      sendResponse(
+        res,
+        { message: error.message, error: true, err: error },
+        400,
+      );
+    } else {
+      sendResponse(res, {
+        message: "An unexpected error occurred",
+        error: true,
+        err: error,
+      });
+    }
+  }
+};
 const updateIssue = async (req: Request, res: Response) => {};
 const deleteIssue = async (req: Request, res: Response) => {
-  const {id} = req.params
+  const { id } = req.params;
   if (!id) {
     return sendResponse(res, { message: "Unauthorized", error: true }, 401);
   }
   try {
     const result = await issuesServices.deleteIssueFromDB(id as string);
-    if(!result){
-       sendResponse(res, { message: "failed to delete issue", error: true, err: result});
+    if (!result) {
+      sendResponse(res, {
+        message: "failed to delete issue",
+        error: true,
+        err: result,
+      });
     }
     sendResponse(res, { message: "Issue deleted successfully", error: false });
   } catch (error: unknown) {
@@ -83,7 +111,6 @@ const deleteIssue = async (req: Request, res: Response) => {
       });
     }
   }
-  
 };
 
 export const issuesController = {
