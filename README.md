@@ -7,7 +7,7 @@ A collaborative platform for software teams to report bugs, suggest features, an
 
 ## Live Link
 
- - [Production Link](devpulse-rosy-iota.vercel.app)
+ - [Production Link](https://devpulse-rosy-iota.vercel.app/)
 
 ## Tech Stack
 
