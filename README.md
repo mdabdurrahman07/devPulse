@@ -123,6 +123,21 @@ lastly to run this project use
 *   **Deletion:** Restricted strictly to users with the `maintainer` role.
 
 
+
+## Demo User and Admin
+
+#### Demo user credentails
+
+- email: user@gmail.com
+- password: User123456
+
+#### Demo admin credentails
+
+- email: admin@gmail.com
+- password: Admin123456
+
+
+
 ## Author
 
 - [@mdabdurrahman](https://github.com/mdabdurrahman07)
