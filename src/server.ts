@@ -2,13 +2,13 @@ import app from "./app";
 import config from "./config/env.config";
 import { initDB } from "./db/dbConnection";
 
-const port = config.port;
-export const main = () => {
-  // db
-  initDB()
+initDB();
+
+if (config.node_env !== "production") {
+  const port = config.port;
   app.listen(port, () => {
     console.log(`DevPulse Server is running on ${port}`);
   });
-};
+}
 
-main();
+export default app;

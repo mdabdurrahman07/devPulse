@@ -7,7 +7,7 @@ A collaborative platform for software teams to report bugs, suggest features, an
 
 ## Live Link
 
- - [link](devpulse-chi-lovat.vercel.app)
+ - [Production Link](devpulse-rosy-iota.vercel.app)
 
 ## Tech Stack
 
@@ -85,6 +85,7 @@ then set the .env (check .env.example.md)
   DB_CONNECTION_STRING=ENTER YOUR NEONDB CONNECTION DB_CONNECTION_STRING
   JWT_ACCESS_SECRET_TOKEN=ENTER YOUR JWT ACCESS SECRET KEY
   JWT_REFRESH_SECRET_TOKEN=ENTER YOU JWT REFRESH SECRET KEY
+  NODE_ENV=development
 ```
 
 lastly to run this project use

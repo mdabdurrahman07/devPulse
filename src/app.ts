@@ -15,8 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: ["https://vercel.app", "http://localhost:5000"],
-    credentials: true
-  })
+    credentials: true,
+  }),
 );
 
 // root
@@ -32,6 +32,6 @@ app.get("/", (req: Request, res: Response) => {
 // auth route
 app.use("/api/auth", authRoute);
 app.use("/api/issues", issuesRoute);
-
 app.use(globalErrorHandler);
+
 export default app;
